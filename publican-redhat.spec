@@ -1,16 +1,17 @@
 %define brand RedHat
 %define pub_name Publican
 %define RHEL6 %(test %{?dist} == .el6 && echo 1 || echo 0)
+%define GOOSE6 %(test %{?dist} == .gl6 && echo 1 || echo 0)
 
 Name:		publican-redhat
 Summary:	Common documentation files for %{brand}
 Version:	2.0
-Release:	1%{?dist}
+Release:	1%{?dist}.goose.1
 License:	CC-BY-SA
 Group:		Applications/Text
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-# Limited to these arches on RHEL 6 due to PDF + Java limitations
-%if %{RHEL6}
+# Limited to these arches on EL6 due to PDF + Java limitations
+%if %{RHEL6} || %{GOOSE6}
 ExclusiveArch:   i686 x86_64
 %else
 BuildArch:   noarch
@@ -46,6 +47,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/publican/Common_Content/%{brand}
 
 %changelog
+* Sun Sep 16 2012 Clint Savage <herlo@gooseproject.org> 2.0-1.goose.1
+- Update to include .gl6 as optional dist
+
 * Mon Jul 26 2010 Jeff Fearn <jfearn@redhat.com> 2.0-1
 - Fix incorrect source
 
